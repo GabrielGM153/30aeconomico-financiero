@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 Años de Análisis Económico · Gabriel GM (Analista Económico y Financiero)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --gold:      #C9A84C;
+    --gold-lt:   #F0D080;
+    --gold-dk:   #8B6914;
+    --ink:       #0A0A0F;
+    --ink2:      #12121A;
+    --ink3:      #1C1C2A;
+    --surface:   #161622;
+    --panel:     #1E1E2E;
+    --border:    rgba(201,168,76,0.22);
+    --red:       #E05252;
+    --green:     #4EC994;
+    --blue:      #4E8EE0;
+    --purple:    #9B59B6;
+    --text:      #E8E0D0;
+    --text-dim:  #9A9278;
+    --text-muted:#5A5440;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--ink);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+  }
+
+  .nav-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.8rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.63rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 6rem 2rem 4rem;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(78,142,224,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 20%, rgba(78,201,148,0.05) 0%, transparent 60%);
+  }
+
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 80%);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 900;
+    line-height: 0.93;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.8rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  .hero-byline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dk);
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.9s forwards;
+  }
+
+  .hero-kpis {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 1.1s forwards;
+  }
+
+  .kpi-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 1.2rem 1.8rem;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+  }
+
+  .kpi-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .kpi-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 1.5s forwards;
+  }
+
+  .scroll-indicator span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding-top: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .section-titles h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-titles h2 em { color: var(--gold); font-style: italic; }
+
+  .section-titles p {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .gold-rule {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1rem 0;
+  }
+
+  /* ── DASHBOARD GRID ── */
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .dash-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+
+  .dash-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 1.4rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .dash-card:hover {
+    border-color: rgba(201,168,76,0.5);
+    transform: translateY(-2px);
+  }
+
+  .dash-card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .dash-card-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .dash-card-sub {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+
+  .dash-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    margin-top: 0.6rem;
+  }
+
+  .badge-up { background: rgba(78,201,148,0.12); color: var(--green); }
+  .badge-dn { background: rgba(224,82,82,0.12); color: var(--red); }
+  .badge-nu { background: rgba(201,168,76,0.12); color: var(--gold); }
+
+  .accent-gold { color: var(--gold); }
+  .accent-green { color: var(--green); }
+  .accent-red { color: var(--red); }
+  .accent-blue { color: var(--blue); }
+  .accent-purple { color: var(--purple); }
+
+  /* ── CHART WRAPPER ── */
+  .chart-wrapper {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .chart-wrapper h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .chart-wrapper p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .chart-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-top: 0.8rem;
+  }
+
+  canvas { max-width: 100%; }
+
+  /* ── CHARTS 2COL ── */
+  .charts-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 750px) { .charts-2col { grid-template-columns: 1fr; } }
+
+  /* ── TIMELINE ── */
+  #timeline-section { padding: 6rem 0; max-width: none; }
+  #timeline-section .inner { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
+
+  .timeline {
+    position: relative;
+    padding: 3rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), var(--gold), transparent);
+    transform: translateX(-50%);
+  }
+
+  .t-event {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .t-event:nth-child(odd) { flex-direction: row; }
+  .t-event:nth-child(even) { flex-direction: row-reverse; }
+
+  .t-content {
+    width: calc(50% - 3rem);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .t-event:nth-child(odd) .t-content { margin-right: auto; }
+  .t-event:nth-child(even) .t-content { margin-left: auto; }
+
+  .t-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.4rem;
+  }
+
+  .t-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  .t-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .t-dot {
+    position: absolute;
+    left: 50%;
+    top: 1.2rem;
+    transform: translateX(-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    box-shadow: 0 0 12px rgba(201,168,76,0.5);
+    z-index: 2;
+  }
+
+  .t-event.crisis .t-content { border-color: rgba(224,82,82,0.4); }
+  .t-event.crisis .t-year { color: var(--red); }
+  .t-event.crisis .t-dot { background: var(--red); box-shadow: 0 0 12px rgba(224,82,82,0.5); }
+
+  .t-event.growth .t-content { border-color: rgba(78,201,148,0.3); }
+  .t-event.growth .t-year { color: var(--green); }
+  .t-event.growth .t-dot { background: var(--green); box-shadow: 0 0 12px rgba(78,201,148,0.5); }
+
+  /* ── THEORY CARDS ── */
+  .theory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) { .theory-grid { grid-template-columns: 1fr; } }
+
+  .theory-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .theory-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .theory-card.monetary::before { background: var(--gold); }
+  .theory-card.fiscal::before { background: var(--blue); }
+  .theory-card.trade::before { background: var(--green); }
+  .theory-card.phillips::before { background: var(--red); }
+  .theory-card.mundell::before { background: var(--purple); }
+  .theory-card.crisis::before { background: #E09040; }
+
+  .theory-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
+
+  .theory-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .theory-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  .theory-card .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .theory-card p {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .theory-card .formula {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.9rem;
+    margin-top: 1rem;
+    color: var(--gold);
+    border-left: 2px solid var(--gold);
+  }
+
+  /* ── TABLE ── */
+  .data-table-wrapper {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: rgba(201,168,76,0.08);
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0.9rem 1.2rem;
+    text-align: right;
+  }
+
+  th:first-child { text-align: left; }
+
+  td {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.7rem 1.2rem;
+    text-align: right;
+    border-bottom: 1px solid rgba(201,168,76,0.06);
+    color: var(--text-dim);
+  }
+
+  td:first-child { text-align: left; color: var(--text); }
+
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .val-pos { color: var(--green); }
+  .val-neg { color: var(--red); }
+  .val-nt  { color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink2);
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  footer .sources {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-top: 1.5rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0 3rem;
+  }
+
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--gold); font-size: 0.8rem; }
+
+  /* ── ANIMATED NUMBER ── */
+  .anim-num { transition: all 0.5s; }
+
+  /* ── SPARKLINES (mini charts) ── */
+  .sparkline-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.6rem;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── KEYFRAMES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-bar {
+    background: var(--ink2);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-top: 62px;
+  }
+
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 40s linear infinite;
+  }
+
+  .ticker-item { display: inline-block; margin-right: 3rem; }
+  .ticker-val { color: var(--gold); margin-left: 0.4rem; }
+  .ticker-pos { color: var(--green); }
+  .ticker-neg { color: var(--red); }
+
+  /* ── INDICATOR PILLS ── */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+  }
+
+  .pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* section backgrounds */
+  .bg-alt { background: var(--ink2); }
+  .full-width { max-width: none; padding: 6rem 2rem; }
+  .full-width .inner { max-width: 1300px; margin: 0 auto; }
+
+  /* Responsive timeline */
+  @media (max-width: 700px) {
+    .timeline::before { left: 1rem; }
+    .t-event, .t-event:nth-child(even) { flex-direction: column; }
+    .t-content { width: 100%; margin: 0 0 0 2.5rem !important; }
+    .t-dot { left: 1rem; }
+    .theory-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 500px) {
+    .theory-grid { grid-template-columns: 1fr; }
+    .dash-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">▲ Gabriel GM · Análisis Económico</div>
+  <ul class="nav-links">
+    <li><a href="#macro">Macro</a></li>
+    <li><a href="#monetaria">Política Monetaria</a></li>
+    <li><a href="#sectorial">Sectorial</a></li>
+    <li><a href="#crisis">Crisis</a></li>
+    <li><a href="#teoria">Teoría</a></li>
+    <li><a href="#datos">Datos</a></li>
+  </ul>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="ticker-item">PIB 2024<span class="ticker-val">$1,852 MDD</span></span>
+    <span class="ticker-item">Inflación 2024<span class="ticker-val ticker-pos">4.87%</span></span>
+    <span class="ticker-item">Tasa Banxico<span class="ticker-val">8.50%</span></span>
+    <span class="ticker-item">TC USD/MXN<span class="ticker-val">17.15</span></span>
+    <span class="ticker-item">Desempleo<span class="ticker-val ticker-pos">2.4%</span></span>
+    <span class="ticker-item">Reservas Int'l<span class="ticker-val">$225 MMDD</span></span>
+    <span class="ticker-item">IPC BMV<span class="ticker-val ticker-pos">+12.3%</span></span>
+    <span class="ticker-item">Deuda/PIB<span class="ticker-val">49.2%</span></span>
+    <span class="ticker-item">Exportaciones<span class="ticker-val">$593 MMDD</span></span>
+    <span class="ticker-item">Remesas<span class="ticker-val">$63.3 MMDD</span></span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="ticker-item">PIB 2024<span class="ticker-val">$1,852 MDD</span></span>
+    <span class="ticker-item">Inflación 2024<span class="ticker-val ticker-pos">4.87%</span></span>
+    <span class="ticker-item">Tasa Banxico<span class="ticker-val">8.50%</span></span>
+    <span class="ticker-item">TC USD/MXN<span class="ticker-val">17.15</span></span>
+    <span class="ticker-item">Desempleo<span class="ticker-val ticker-pos">2.4%</span></span>
+    <span class="ticker-item">Reservas Int'l<span class="ticker-val">$225 MMDD</span></span>
+    <span class="ticker-item">IPC BMV<span class="ticker-val ticker-pos">+12.3%</span></span>
+    <span class="ticker-item">Deuda/PIB<span class="ticker-val">49.2%</span></span>
+    <span class="ticker-item">Exportaciones<span class="ticker-val">$593 MMDD</span></span>
+    <span class="ticker-item">Remesas<span class="ticker-val">$63.3 MMDD</span></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-lines"></div>
+  <p class="hero-eyebrow">México · 1994 – 2025 · Fuentes: INEGI & Banxico</p>
+  <h1 class="hero-title"><em>30 Años</em><br>de Análisis<br>Económico<br>y Financiero</h1>
+  <p class="hero-subtitle">Una visión integral de tres décadas</p>
+  <p class="hero-byline">by: Gabriel GM (Analista Económico y Financiero) &nbsp;·&nbsp; Edición 2025</p>
+  <div class="hero-kpis">
+    <div class="kpi-card">
+      <div class="kpi-value">$1.85<span style="font-size:0.8em">T</span></div>
+      <div class="kpi-label">PIB 2024 (USD)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value accent-red">8.7%</div>
+      <div class="kpi-label">Inflación pico 2022</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value accent-green">3.2%</div>
+      <div class="kpi-label">Crec. PIB 2023</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$10,313</div>
+      <div class="kpi-label">PIB per cápita USD</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value accent-blue">$225B</div>
+      <div class="kpi-label">Reservas Int'l</div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Explorar</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 1 · INDICADORES MACRO
+     ════════════════════════════════════ -->
+<div style="background:var(--ink2); padding: 6rem 0;" id="macro">
+<section>
+  <div class="section-header reveal">
+    <div class="section-number">01 · MACROECONÓMICO</div>
+    <div class="section-titles">
+      <h2>Dashboard <em>Macroeconómico</em></h2>
+      <div class="gold-rule"></div>
+      <p>Indicadores fundamentales de la economía mexicana a lo largo de tres décadas. Datos del Sistema de Cuentas Nacionales (INEGI) y Banco de México.</p>
+    </div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="dash-grid reveal">
+    <div class="dash-card">
+      <div class="dash-card-label">PIB Nominal</div>
+      <div class="dash-card-value accent-gold">$1.85T</div>
+      <div class="dash-card-sub">USD corrientes (2024)</div>
+      <div class="dash-card-badge badge-up">▲ +3.4% vs 2023</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Crecimiento PIB</div>
+      <div class="dash-card-value accent-green">+1.6%</div>
+      <div class="dash-card-sub">Q4 2025 (anual)</div>
+      <div class="dash-card-badge badge-nu">Prom. 30a: 2.03%</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Inflación (INPC)</div>
+      <div class="dash-card-value accent-red">4.87%</div>
+      <div class="dash-card-sub">Cierre 2024</div>
+      <div class="dash-card-badge badge-dn">Meta Banxico: 3%</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Tipo de Cambio</div>
+      <div class="dash-card-value">17.15</div>
+      <div class="dash-card-sub">MXN / USD (2024)</div>
+      <div class="dash-card-badge badge-dn">▼ Del 3.46 en 1994</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Tasa de Interés</div>
+      <div class="dash-card-value accent-blue">8.50%</div>
+      <div class="dash-card-sub">Banxico (2024)</div>
+      <div class="dash-card-badge badge-dn">▼ Recorte 25 pb</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Desempleo</div>
+      <div class="dash-card-value accent-green">2.4%</div>
+      <div class="dash-card-sub">Diciembre 2025</div>
+      <div class="dash-card-badge badge-up">Mín. histórico reciente</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">PIB per Cápita</div>
+      <div class="dash-card-value">$10,313</div>
+      <div class="dash-card-sub">USD (2024) — máximo histórico</div>
+      <div class="dash-card-badge badge-up">▲ 81% promedio mundial</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">Reservas Int'l</div>
+      <div class="dash-card-value accent-blue">$225B</div>
+      <div class="dash-card-sub">USD Banxico (2024)</div>
+      <div class="dash-card-badge badge-up">▲ vs $6.4B en 1994</div>
+    </div>
+  </div>
+
+  <!-- PIB CHART -->
+  <div class="chart-wrapper reveal">
+    <h3>Crecimiento del PIB Real — México (1994–2025)</h3>
+    <p>Variación porcentual anual. Fuente: INEGI · Sistema de Cuentas Nacionales de México</p>
+    <canvas id="pibChart" height="90"></canvas>
+    <div class="chart-meta">FUENTE: INEGI · SCNM · PIB TRIMESTRAL — BASE 2018 · CIFRAS PRELIMINARES PARA 2024-2025</div>
+  </div>
+
+  <!-- PIB NOMINAL USD CHART -->
+  <div class="chart-wrapper reveal">
+    <h3>PIB Nominal en miles de millones de USD (1994–2024)</h3>
+    <p>Refleja tanto el crecimiento real como los movimientos del tipo de cambio. Fuente: INEGI / Banco Mundial</p>
+    <canvas id="pibNomChart" height="80"></canvas>
+    <div class="chart-meta">FUENTE: INEGI · BANCO MUNDIAL · USD CORRIENTES</div>
+  </div>
+
+</section>
+</div>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 2 · POLÍTICA MONETARIA
+     ════════════════════════════════════ -->
+<div style="padding: 6rem 0;" id="monetaria">
+<section>
+  <div class="section-header reveal">
+    <div class="section-number">02 · POLÍTICA MONETARIA</div>
+    <div class="section-titles">
+      <h2>Banco de México <em>&amp; Precios</em></h2>
+      <div class="gold-rule"></div>
+      <p>Desde su autonomía en 1994, Banxico ha transitado del control por tipo de cambio fijo a un esquema de metas de inflación (inflation targeting) adoptado en 2001.</p>
+    </div>
+  </div>
+
+  <div class="charts-2col reveal">
+    <div class="chart-wrapper">
+      <h3>Inflación Anual (INPC)</h3>
+      <p>1994–2025. Meta Banxico: 3% ± 1pp</p>
+      <canvas id="inflChart" height="180"></canvas>
+      <div class="chart-meta">FUENTE: INEGI · ÍNDICE NACIONAL DE PRECIOS AL CONSUMIDOR</div>
+    </div>
+    <div class="chart-wrapper">
+      <h3>Tasa de Interés Objetivo Banxico</h3>
+      <p>2005–2025. Instrumento principal de política monetaria</p>
+      <canvas id="tasaChart" height="180"></canvas>
+      <div class="chart-meta">FUENTE: BANCO DE MÉXICO · JUNTA DE GOBIERNO</div>
+    </div>
+  </div>
+
+  <div class="charts-2col reveal">
+    <div class="chart-wrapper">
+      <h3>Tipo de Cambio USD/MXN</h3>
+      <p>Evolución histórica 1994–2025. Promedio anual</p>
+      <canvas id="tcChart" height="180"></canvas>
+      <div class="chart-meta">FUENTE: BANCO DE MÉXICO · FIX INTERBANCARIO</div>
+    </div>
+    <div class="chart-wrapper">
+      <h3>Reservas Internacionales Netas</h3>
+      <p>Miles de millones de USD. 1994–2024</p>
+      <canvas id="reservasChart" height="180"></canvas>
+      <div class="chart-meta">FUENTE: BANCO DE MÉXICO · BALANCE DE PAGOS</div>
+    </div>
+  </div>
+
+</section>
+</div>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 3 · ANÁLISIS SECTORIAL
+     ════════════════════════════════════ -->
+<div style="background:var(--ink2); padding: 6rem 0;" id="sectorial">
+<section>
+  <div class="section-header reveal">
+    <div class="section-number">03 · SECTORIAL</div>
+    <div class="section-titles">
+      <h2>Estructura <em>Productiva</em></h2>
+      <div class="gold-rule"></div>
+      <p>Composición del PIB por actividad económica. México ha transitado de una economía petro-dependiente hacia un perfil manufacturero orientado a exportaciones.</p>
+    </div>
+  </div>
+
+  <div class="charts-2col reveal">
+    <div class="chart-wrapper">
+      <h3>Composición del PIB por Sector (2024)</h3>
+      <p>Participación porcentual en el producto. Fuente: INEGI</p>
+      <canvas id="sectorPieChart" height="220"></canvas>
+      <div class="chart-meta">FUENTE: INEGI · SCNM · 2024</div>
+    </div>
+    <div class="chart-wrapper">
+      <h3>Exportaciones Totales (MMD USD)</h3>
+      <p>1994–2024. El TLCAN/T-MEC como motor exportador</p>
+      <canvas id="exportChart" height="220"></canvas>
+      <div class="chart-meta">FUENTE: INEGI · BANXICO · BALANZA COMERCIAL</div>
+    </div>
+  </div>
+
+  <div class="chart-wrapper reveal">
+    <h3>Desempleo Abierto — Tasa Porcentual (1994–2025)</h3>
+    <p>La tasa de desempleo promedió 3.67% en los 30 años. Máximo en 2009 (Crisis Global). Fuente: INEGI · ENOE</p>
+    <canvas id="desempleoChart" height="80"></canvas>
+    <div class="chart-meta">FUENTE: INEGI · ENCUESTA NACIONAL DE OCUPACIÓN Y EMPLEO (ENOE)</div>
+  </div>
+
+  <div class="chart-wrapper reveal">
+    <h3>Remesas vs Inversión Extranjera Directa (IED) — MMD USD</h3>
+    <p>Las remesas superaron a la IED como fuente de divisas desde 2019. Fuente: Banxico</p>
+    <canvas id="remesasChart" height="85"></canvas>
+    <div class="chart-meta">FUENTE: BANCO DE MÉXICO · BALANZA DE PAGOS</div>
+  </div>
+
+</section>
+</div>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 4 · LÍNEA DEL TIEMPO
+     ════════════════════════════════════ -->
+<div id="crisis" style="padding: 0;">
+<div id="timeline-section">
+  <div class="inner">
+    <div class="section-header reveal">
+      <div class="section-number">04 · CRONOLOGÍA</div>
+      <div class="section-titles">
+        <h2>30 Años de <em>Historia Económica</em></h2>
+        <div class="gold-rule"></div>
+        <p>Los hitos que moldearon la economía mexicana: crisis, reformas, tratados y shocks externos.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div class="timeline">
+
+      <div class="t-event crisis reveal">
+        <div class="t-content">
+          <div class="t-year">1994 · DICIEMBRE</div>
+          <div class="t-title">Error de Diciembre — Crisis del Peso</div>
+          <div class="t-desc">La devaluación abrupta del peso detonó una crisis bancaria y cambiaria. El PIB cayó −6.2% en 1995. El TC pasó de 3.46 a más de 6 pesos/dólar en semanas. Rescate financiero de $50 MMDD con apoyo del FMI y EUA.</div>
+          <div class="pill-row"><span class="pill">Devaluación</span><span class="pill">Crisis Bancaria</span><span class="pill">FOBAPROA</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event growth reveal">
+        <div class="t-content">
+          <div class="t-year">1994 · ENERO</div>
+          <div class="t-title">Entrada en Vigor del TLCAN</div>
+          <div class="t-desc">El Tratado de Libre Comercio de América del Norte transformó el perfil exportador de México. Las exportaciones pasaron de $60 MMDD en 1994 a más de $593 MMDD en 2024, con manufactura como motor principal.</div>
+          <div class="pill-row"><span class="pill">Comercio</span><span class="pill">Manufactura</span><span class="pill">IED</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event reveal">
+        <div class="t-content">
+          <div class="t-year">2001</div>
+          <div class="t-title">Metas de Inflación — Nuevo Régimen Banxico</div>
+          <div class="t-desc">Banxico adoptó formalmente el esquema de Inflation Targeting con meta del 3% ± 1pp. La inflación que superaba el 50% anual en 1995 descendió progresivamente hasta niveles de un dígito bajo.</div>
+          <div class="pill-row"><span class="pill">Política Monetaria</span><span class="pill">Autonomía</span><span class="pill">Credibilidad</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event crisis reveal">
+        <div class="t-content">
+          <div class="t-year">2008–2009</div>
+          <div class="t-title">Crisis Financiera Global</div>
+          <div class="t-desc">La recesión de EUA arrastró a México: el PIB cayó −5.3% en 2009, el desempleo llegó a 6.4%, y las exportaciones se contrajeron severamente. El peso se depreció de 10 a 15 pesos/dólar.</div>
+          <div class="pill-row"><span class="pill">Recesión</span><span class="pill">Desempleo Pico</span><span class="pill">Depreciación</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event growth reveal">
+        <div class="t-content">
+          <div class="t-year">2013</div>
+          <div class="t-title">Reforma Energética y Estructural</div>
+          <div class="t-desc">La apertura del sector energético a inversión privada y extranjera buscó modernizar Pemex y atraer capital. Las reformas fiscal, educativa y de telecomunicaciones transformaron el marco institucional.</div>
+          <div class="pill-row"><span class="pill">Pemex</span><span class="pill">IED</span><span class="pill">Reformas</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event reveal">
+        <div class="t-content">
+          <div class="t-year">2018</div>
+          <div class="t-title">T-MEC — Modernización del TLCAN</div>
+          <div class="t-desc">El T-MEC incorporó reglas de origen más estrictas (75% manufactura regional en autos), disposiciones laborales y capítulos sobre comercio digital. Entró en vigor en julio de 2020.</div>
+          <div class="pill-row"><span class="pill">T-MEC</span><span class="pill">Cadenas de Valor</span><span class="pill">Nearshoring</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event crisis reveal">
+        <div class="t-content">
+          <div class="t-year">2020</div>
+          <div class="t-title">Pandemia COVID-19 — Recesión Histórica</div>
+          <div class="t-desc">El PIB se contrajo −8.2% en 2020, la peor caída desde la Gran Depresión. El PIB del Q2-2020 cayó −20.3% interanual — el mínimo histórico. La recuperación fue en forma de "K" con sectores muy dispares.</div>
+          <div class="pill-row"><span class="pill">Recesión Histórica</span><span class="pill">COVID-19</span><span class="pill">Shocks Oferta</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event growth reveal">
+        <div class="t-content">
+          <div class="t-year">2021–2023</div>
+          <div class="t-title">Recuperación y Nearshoring</div>
+          <div class="t-desc">El PIB rebotó +4.7% en 2021 (máximo post-pandemia: +22.7% interanual en Q2). México captó un flujo récord de IED impulsado por el nearshoring, reconfiguración de cadenas de suministro y ventajas del T-MEC.</div>
+          <div class="pill-row"><span class="pill">Nearshoring</span><span class="pill">Recuperación</span><span class="pill">IED Récord</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event reveal">
+        <div class="t-content">
+          <div class="t-year">2022</div>
+          <div class="t-title">Inflación Máxima en 22 Años</div>
+          <div class="t-desc">El INPC alcanzó 8.7% en agosto 2022 — máximo desde el año 2000. Banxico respondió con 10 aumentos consecutivos de tasas, llegando al 11.25%. La inflación subyacente tocó 8.5% interanual.</div>
+          <div class="pill-row"><span class="pill">Inflación</span><span class="pill">Alza Tasas</span><span class="pill">Shocks Globales</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+      <div class="t-event growth reveal">
+        <div class="t-content">
+          <div class="t-year">2024–2025</div>
+          <div class="t-title">Desinflación y Ciclo de Recortes</div>
+          <div class="t-desc">La inflación convergió hacia 4.87% (2024) y Banxico inició un ciclo de recortes. El peso alcanzó niveles competitivos. Las reservas internacionales superaron $225 MMDD. PIB per cápita en máximo histórico: $10,313 USD.</div>
+          <div class="pill-row"><span class="pill">Desinflación</span><span class="pill">Recortes Banxico</span><span class="pill">Máximo Reservas</span></div>
+        </div>
+        <div class="t-dot"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 5 · TEORÍA ECONÓMICA
+     ════════════════════════════════════ -->
+<div style="background:var(--ink2); padding: 6rem 0;" id="teoria">
+<section>
+  <div class="section-header reveal">
+    <div class="section-number">05 · TEORÍA APLICADA</div>
+    <div class="section-titles">
+      <h2>Marco <em>Teórico</em></h2>
+      <div class="gold-rule"></div>
+      <p>Los principales marcos analíticos de la economía y las finanzas aplicados al caso mexicano en 30 años de transformación.</p>
+    </div>
+  </div>
+
+  <div class="theory-grid reveal">
+
+    <div class="theory-card monetary">
+      <span class="theory-icon">🏦</span>
+      <div class="tag">Macroeconomía · Monetarismo</div>
+      <h3>Inflation Targeting</h3>
+      <p>Desde 2001, Banxico aplica el esquema de metas de inflación (Bernanke & Mishkin, 1997). La ancla nominal es el 3% ±1pp. La credibilidad reduce las expectativas inflacionarias y el costo de desinflación.</p>
+      <div class="formula">π* = 3% | E[π] → convergencia vía tasas</div>
+    </div>
+
+    <div class="theory-card fiscal">
+      <span class="theory-icon">⚖️</span>
+      <div class="tag">Finanzas Públicas</div>
+      <h3>Regla Fiscal &amp; Deuda Soberana</h3>
+      <p>México mantiene un marco de responsabilidad fiscal. La relación Deuda/PIB del 49.2% (2024) está por encima de la media histórica, generando debate sobre sostenibilidad (Reinhart &amp; Rogoff, 2010) y espacio fiscal.</p>
+      <div class="formula">d/y = (r - g) · b + deficit_primario</div>
+    </div>
+
+    <div class="theory-card trade">
+      <span class="theory-icon">🌐</span>
+      <div class="tag">Economía Internacional</div>
+      <h3>Teoría del Comercio &amp; TLCAN</h3>
+      <p>El TLCAN siguió la lógica de la ventaja comparativa (Ricardo) y la integración vertical de cadenas de valor. México especializó su aparato productivo en manufactura intensiva en trabajo con acceso preferencial a EUA.</p>
+      <div class="formula">X = f(competitividad, tipo de cambio real, IED)</div>
+    </div>
+
+    <div class="theory-card phillips">
+      <span class="theory-icon">📉</span>
+      <div class="tag">Análisis de Ciclos</div>
+      <h3>Curva de Phillips Modificada</h3>
+      <p>La relación inflación-desempleo en México fue inestable en los 90s. Post-2001, con expectativas ancladas, la curva se aplanó significativamente. En 2022-23 se observó el trade-off clásico: inflación alta, desempleo bajo.</p>
+      <div class="formula">π = πᵉ − β(u − u*) + shocks oferta</div>
+    </div>
+
+    <div class="theory-card mundell">
+      <span class="theory-icon">🔺</span>
+      <div class="tag">Macroeconomía Abierta</div>
+      <h3>Trilema de Mundell-Fleming</h3>
+      <p>México optó por tipo de cambio flotante y autonomía monetaria, sacrificando control cambiario. Esta elección permitió absorber shocks externos (COVID, crisis 2008) vía depreciación en lugar de ajuste recesivo puro.</p>
+      <div class="formula">TC flotante + autonomía → sin control de capitales</div>
+    </div>
+
+    <div class="theory-card crisis">
+      <span class="theory-icon">⚡</span>
+      <div class="tag">Economía Financiera</div>
+      <h3>Modelos de Crisis Cambiaria</h3>
+      <p>La crisis de 1994 ilustró los modelos de 1ª generación (Krugman, 1979): inconsistencia entre política fiscal expansiva y tipo de cambio fijo. Los ataques especulativos agotaron reservas. El "error de diciembre" fue paradigmático.</p>
+      <div class="formula">Ataque: R* &lt; demanda especulativa esperada</div>
+    </div>
+
+  </div>
+
+  <!-- EXTRA ROW -->
+  <div class="theory-grid reveal" style="margin-top:1.5rem; grid-template-columns: repeat(2,1fr);">
+
+    <div class="theory-card" style="border-top-color: var(--gold);">
+      <span class="theory-icon">💹</span>
+      <div class="tag">Finanzas · Mercados de Capital</div>
+      <h3>Eficiencia de Mercado &amp; BMV</h3>
+      <p>La Bolsa Mexicana de Valores (BMV) ha experimentado períodos de alta volatilidad correlacionados con crisis cambiarias, cambios en calificación soberana y expectativas de política monetaria de la Fed. El IPC ha multiplicado su valor nominal varias veces desde 1994, aunque ajustado por inflación el rendimiento real fue más moderado. La integración con mercados globales (hipótesis de eficiencia semi-fuerte) se profundizó con la apertura financiera de los 90s.</p>
+      <div class="formula">E[R] = Rf + β(Rm − Rf) | CAPM aplicado</div>
+    </div>
+
+    <div class="theory-card" style="border-top-color: var(--blue);">
+      <span class="theory-icon">🔄</span>
+      <div class="tag">Desarrollo Económico</div>
+      <h3>Trampa del Ingreso Medio &amp; Productividad</h3>
+      <p>México ha enfrentado durante 30 años la llamada "trampa del ingreso medio": crece, pero no lo suficiente para cerrar la brecha con economías avanzadas. La productividad total de los factores (PTF) ha sido el eslabón débil. El nearshoring 2022-2025 representa una oportunidad histórica de dar el salto tecnológico si se acompaña de inversión en capital humano e infraestructura. El desafío pendiente es la informalidad (~55% de la PEA) y la educación.</p>
+      <div class="formula">Y = A · K^α · L^(1-α) | A (PTF) estancado</div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ════════════════════════════════════
+     SECCIÓN 6 · TABLA DE DATOS
+     ════════════════════════════════════ -->
+<div style="padding: 6rem 0;" id="datos">
+<section>
+  <div class="section-header reveal">
+    <div class="section-number">06 · BASE DE DATOS</div>
+    <div class="section-titles">
+      <h2>Series <em>Históricas</em></h2>
+      <div class="gold-rule"></div>
+      <p>Datos consolidados de INEGI y Banco de México. Principales indicadores macroeconómicos anuales 1994–2025.</p>
+    </div>
+  </div>
+
+  <div class="data-table-wrapper reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Año</th>
+          <th>PIB Crecimiento %</th>
+          <th>Inflación % (INPC)</th>
+          <th>TC USD/MXN</th>
+          <th>Tasa Banxico %</th>
+          <th>Desempleo %</th>
+          <th>Reservas MMDUSD</th>
+        </tr>
+      </thead>
+      <tbody id="dataTableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ADDITIONAL CHART: Correlation -->
+  <div class="chart-wrapper reveal">
+    <h3>Inflación vs Tasa de Interés Banxico (2005–2025)</h3>
+    <p>Correlación entre la política monetaria y el control inflacionario. La tasa sigue a la inflación con rezago.</p>
+    <canvas id="corrChart" height="85"></canvas>
+    <div class="chart-meta">FUENTE: BANCO DE MÉXICO · INEGI · ELABORACIÓN PROPIA</div>
+  </div>
+
+</section>
+</div>
+
+<!-- ════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════ -->
+<footer>
+  <div class="footer-brand">30 Años de Análisis Económico y Financiero</div>
+  <p>by: <strong>Gabriel GM</strong> · Edición 2025</p>
+  <p style="margin-top:0.5rem; font-style:italic; font-family:'Crimson Pro',serif; font-size:1rem; color:var(--gold);">
+    "El propósito de estudiar economía no es adquirir un conjunto de respuestas prefabricadas a preguntas económicas, sino aprender a evitar ser engañados por los economistas." — Joan Robinson
+  </p>
+  <div class="sources">
+    FUENTES DE DATOS: INSTITUTO NACIONAL DE ESTADÍSTICA Y GEOGRAFÍA (INEGI) · BANCO DE MÉXICO (BANXICO) · SISTEMA DE CUENTAS NACIONALES · 
+    ÍNDICE NACIONAL DE PRECIOS AL CONSUMIDOR · ENCUESTA NACIONAL DE OCUPACIÓN Y EMPLEO (ENOE) · BALANZA DE PAGOS · BANCO MUNDIAL
+    <br>
+    Datos correspondientes al período 1994–2025. Cifras en pesos, dólares o porcentajes según se indica. Algunas estimaciones 2024-2025 son preliminares.
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════
+
+const years = [1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,
+               2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,
+               2018,2019,2020,2021,2022,2023,2024,2025];
+
+const pibGrowth = [4.5,-6.2,5.1,6.8,5.0,3.9,6.6,-0.3,0.1,1.4,4.1,3.3,
+                   5.0,3.1,1.2,-5.3,5.1,4.0,4.0,1.4,2.8,3.3,2.9,2.1,
+                   2.2,-0.3,-8.2,4.7,3.9,3.2,1.5,0.5];
+
+const pibNom = [527,421,409,501,533,610,751,803,839,871,988,1021,
+                1185,1300,1223,920,1186,1278,1300,1314,1328,1240,1197,1230,
+                1310,1322,1097,1316,1460,1793,1853,1814];
+
+const inflacion = [7.1,51.9,27.7,15.7,18.6,12.3,9.0,4.4,5.7,4.0,5.2,3.3,
+                   4.1,3.8,6.5,3.6,4.2,3.8,3.6,4.0,4.1,2.1,3.4,6.8,
+                   4.8,2.8,3.4,7.4,8.7,4.7,4.87,3.8];
+
+const tipoCambio = [3.46,6.42,7.60,7.92,9.14,9.56,9.62,9.34,9.66,10.79,
+                    11.29,10.90,10.90,10.93,11.15,13.50,12.64,12.42,13.17,
+                    13.08,13.30,15.87,18.66,18.92,19.23,19.26,21.49,20.27,
+                    20.13,17.25,17.15,17.90];
+
+const tasaBanxico = [null,null,null,null,null,null,null,null,null,null,null,9.2,
+                     7.0,7.5,8.0,4.5,4.5,4.5,4.5,3.5,3.0,3.0,4.75,7.0,
+                     8.0,7.25,4.25,4.5,10.5,11.25,8.5,7.75];
+
+const desempleo = [3.7,6.2,5.5,3.7,3.2,2.5,2.2,2.8,3.0,3.3,3.9,3.6,
+                   3.5,3.4,3.9,5.5,5.4,5.2,4.9,4.9,4.8,4.3,4.0,3.4,
+                   3.3,3.5,4.5,3.8,3.3,2.9,2.5,2.4];
+
+const reservas = [6.4,15.7,17.5,22.3,30.1,31.8,35.5,44.8,50.6,58.9,
+                  64.2,74.1,76.3,87.2,95.3,99.9,113.6,149.2,163.5,176.5,
+                  193.0,177.5,176.5,172.8,175.6,182.8,192.7,202.6,204.4,
+                  213.5,225.4,230.0];
+
+// TABLE EXTRA DATA (histórico simplificado)
+const tableData = [
+  [1994, 4.5, 7.1, 3.46, null, 3.7, 6.4],
+  [1995,-6.2,51.9, 6.42, null, 6.2, 15.7],
+  [1996, 5.1,27.7, 7.60, null, 5.5, 17.5],
+  [1997, 6.8,15.7, 7.92, null, 3.7, 22.3],
+  [1998, 5.0,18.6, 9.14, null, 3.2, 30.1],
+  [1999, 3.9,12.3, 9.56, null, 2.5, 31.8],
+  [2000, 6.6, 9.0, 9.62, null, 2.2, 35.5],
+  [2001,-0.3, 4.4, 9.34, null, 2.8, 44.8],
+  [2002, 0.1, 5.7, 9.66, null, 3.0, 50.6],
+  [2003, 1.4, 4.0,10.79, null, 3.3, 58.9],
+  [2004, 4.1, 5.2,11.29, null, 3.9, 64.2],
+  [2005, 3.3, 3.3,10.90, 9.2, 3.6, 74.1],
+  [2006, 5.0, 4.1,10.90, 7.0, 3.5, 76.3],
+  [2007, 3.1, 3.8,10.93, 7.5, 3.4, 87.2],
+  [2008, 1.2, 6.5,11.15, 8.0, 3.9, 95.3],
+  [2009,-5.3, 3.6,13.50, 4.5, 5.5, 99.9],
+  [2010, 5.1, 4.2,12.64, 4.5, 5.4,113.6],
+  [2011, 4.0, 3.8,12.42, 4.5, 5.2,149.2],
+  [2012, 4.0, 3.6,13.17, 4.5, 4.9,163.5],
+  [2013, 1.4, 4.0,13.08, 3.5, 4.9,176.5],
+  [2014, 2.8, 4.1,13.30, 3.0, 4.8,193.0],
+  [2015, 3.3, 2.1,15.87, 3.0, 4.3,177.5],
+  [2016, 2.9, 3.4,18.66,4.75, 4.0,176.5],
+  [2017, 2.1, 6.8,18.92, 7.0, 3.4,172.8],
+  [2018, 2.2, 4.8,19.23, 8.0, 3.3,175.6],
+  [2019,-0.3, 2.8,19.26,7.25, 3.5,182.8],
+  [2020,-8.2, 3.4,21.49,4.25, 4.5,192.7],
+  [2021, 4.7, 7.4,20.27,4.50, 3.8,202.6],
+  [2022, 3.9, 8.7,20.13,10.5, 3.3,204.4],
+  [2023, 3.2, 4.7,17.25,11.25,2.9,213.5],
+  [2024, 1.5, 4.87,17.15,8.5, 2.5,225.4],
+  [2025, 0.5, 3.8, 17.9, 7.75,2.4,230.0],
+];
+
+// ══════════════════════════════════════
+//  CHART DEFAULTS
+// ══════════════════════════════════════
+Chart.defaults.color = '#9A9278';
+Chart.defaults.borderColor = 'rgba(201,168,76,0.1)';
+Chart.defaults.font.family = "'Space Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const GOLD  = '#C9A84C';
+const GREEN = '#4EC994';
+const RED   = '#E05252';
+const BLUE  = '#4E8EE0';
+const PURP  = '#9B59B6';
+
+function gradientFill(ctx, color, top=0.35, bot=0) {
+  const g = ctx.createLinearGradient(0,0,0,ctx.canvas.offsetHeight||300);
+  g.addColorStop(0, color.replace(')', `,${top})`).replace('rgb', 'rgba'));
+  g.addColorStop(1, color.replace(')', `,${bot})`).replace('rgb', 'rgba'));
+  return g;
+}
+
+// ══════════════════════════════════════
+//  1. PIB GROWTH BAR
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('pibChart').getContext('2d');
+  const colors = pibGrowth.map(v => v >= 0 ? GREEN : RED);
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Crecimiento PIB %',
+        data: pibGrowth,
+        backgroundColor: colors,
+        borderWidth: 0,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.parsed.y > 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`
+          }
+        },
+        annotation: {}
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45 } },
+        y: {
+          grid: { color: 'rgba(201,168,76,0.08)' },
+          ticks: { callback: v => v + '%' }
+        }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  2. PIB NOMINAL
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('pibNomChart').getContext('2d');
+  const years2 = years.slice(0, pibNom.length);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years2,
+      datasets: [{
+        label: 'PIB Nominal (MMD USD)',
+        data: pibNom,
+        borderColor: GOLD,
+        borderWidth: 2.5,
+        pointBackgroundColor: GOLD,
+        pointRadius: 3,
+        fill: true,
+        backgroundColor: function(ctx2) {
+          const chart = ctx2.chart;
+          const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(201,168,76,0.25)');
+          g.addColorStop(1, 'rgba(201,168,76,0.01)');
+          return g;
+        },
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` $${ctx.parsed.y}B USD` } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          grid: { color: 'rgba(201,168,76,0.08)' },
+          ticks: { callback: v => '$' + v + 'B' }
+        }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  3. INFLACIÓN
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('inflChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Inflación INPC %',
+        data: inflacion,
+        borderColor: RED,
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: true,
+        backgroundColor: function(ctx2) {
+          const chart = ctx2.chart;
+          const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(224,82,82,0.3)');
+          g.addColorStop(1, 'rgba(224,82,82,0.01)');
+          return g;
+        },
+        tension: 0.4
+      },{
+        label: 'Meta 3%',
+        data: years.map(()=>3),
+        borderColor: 'rgba(201,168,76,0.5)',
+        borderDash: [6,4],
+        borderWidth: 1.5,
+        pointRadius: 0,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true, labels: { boxWidth: 12, padding: 10 } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45 } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  4. TASA BANXICO
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('tasaChart').getContext('2d');
+  const labels2 = years.filter((_,i)=>i>=11);
+  const tasaData = tasaBanxico.filter(v=>v!==null);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels2,
+      datasets: [{
+        label: 'Tasa Objetivo Banxico %',
+        data: tasaData,
+        borderColor: BLUE,
+        borderWidth: 2,
+        pointRadius: 3,
+        fill: true,
+        backgroundColor: function(ctx2) {
+          const chart = ctx2.chart;
+          const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(78,142,224,0.25)');
+          g.addColorStop(1, 'rgba(78,142,224,0.02)');
+          return g;
+        },
+        tension: 0.3,
+        stepped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  5. TIPO DE CAMBIO
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('tcChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'USD/MXN',
+        data: tipoCambio,
+        borderColor: GOLD,
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: true,
+        backgroundColor: function(ctx2) {
+          const chart = ctx2.chart;
+          const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(201,168,76,0.2)');
+          g.addColorStop(1, 'rgba(201,168,76,0.01)');
+          return g;
+        },
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45 } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => '$' + v } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  6. RESERVAS
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('reservasChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Reservas Int\'l (MMD USD)',
+        data: reservas,
+        backgroundColor: 'rgba(78,142,224,0.7)',
+        borderWidth: 0,
+        borderRadius: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45 } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => '$' + v + 'B' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  7. SECTOR PIE
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('sectorPieChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Servicios','Manufactura','Construcción','Comercio','Agricultura','Minería','Gobierno','Otros'],
+      datasets: [{
+        data: [52.3, 17.8, 5.1, 9.2, 3.3, 5.0, 3.5, 3.8],
+        backgroundColor: [BLUE, GOLD, GREEN, PURP, '#E09040', RED, '#7B8B9A', '#5A5A7A'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { boxWidth: 10, padding: 8, font: { size: 9 } }
+        },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  8. EXPORTACIONES
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('exportChart').getContext('2d');
+  const exYears = [1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2022,2024];
+  const exData =  [60,  96, 117, 166, 161, 189, 250, 292, 298, 371, 397, 374, 450, 373, 578, 593];
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: exYears,
+      datasets: [{
+        label: 'Exportaciones (MMD USD)',
+        data: exData,
+        backgroundColor: exData.map((_,i) => i < 4 ? 'rgba(201,168,76,0.5)' : i < 10 ? 'rgba(78,142,224,0.6)' : 'rgba(78,201,148,0.7)'),
+        borderWidth: 0,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => '$' + v + 'B' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  9. DESEMPLEO
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('desempleoChart').getContext('2d');
+  const colors2 = desempleo.map(v => v > 5 ? RED : v < 3 ? GREEN : GOLD);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Desempleo %',
+        data: desempleo,
+        borderColor: GOLD,
+        borderWidth: 2,
+        pointBackgroundColor: colors2,
+        pointRadius: 3,
+        fill: true,
+        backgroundColor: function(ctx2) {
+          const chart = ctx2.chart;
+          const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(201,168,76,0.2)');
+          g.addColorStop(1, 'rgba(201,168,76,0.01)');
+          return g;
+        },
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  10. REMESAS vs IED
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('remesasChart').getContext('2d');
+  const rYears = [2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2022,2024];
+  const remData = [6.6, 9.8,16.6,25.6,25.1,21.3,22.4,23.6,28.7,33.7,40.6,58.5,63.3];
+  const iedData = [16.2,22.4,19.6,19.9,21.9,19.0,14.3,22.4,26.7,32.5,28.7,35.3,36.0];
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: rYears,
+      datasets: [{
+        label: 'Remesas',
+        data: remData,
+        borderColor: GREEN,
+        borderWidth: 2.5,
+        pointRadius: 3,
+        fill: false,
+        tension: 0.4
+      },{
+        label: 'IED',
+        data: iedData,
+        borderColor: BLUE,
+        borderWidth: 2.5,
+        pointRadius: 3,
+        fill: false,
+        tension: 0.4,
+        borderDash: [6,3]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { boxWidth: 12 } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => '$' + v + 'B' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  11. INFLACIÓN vs TASA (Correlation)
+// ══════════════════════════════════════
+(function(){
+  const ctx = document.getElementById('corrChart').getContext('2d');
+  const cYears = years.filter((_,i)=>i>=11);
+  const inflSlice = inflacion.slice(11);
+  const tasaSlice = tasaBanxico.filter(v=>v!==null);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: cYears,
+      datasets: [{
+        label: 'Inflación INPC %',
+        data: inflSlice,
+        borderColor: RED,
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: false,
+        tension: 0.4
+      },{
+        label: 'Tasa Banxico %',
+        data: tasaSlice,
+        borderColor: BLUE,
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { boxWidth: 12 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════
+//  TABLE POPULATE
+// ══════════════════════════════════════
+(function(){
+  const tbody = document.getElementById('dataTableBody');
+  tableData.forEach(row => {
+    const [yr, pib, infl, tc, tasa, desemp, res] = row;
+    const pibCls = pib >= 0 ? 'val-pos' : 'val-neg';
+    const inflCls = infl > 10 ? 'val-neg' : infl < 4 ? 'val-pos' : 'val-nt';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${yr}</td>
+      <td class="${pibCls}">${pib > 0 ? '+' : ''}${pib.toFixed(1)}%</td>
+      <td class="${inflCls}">${infl.toFixed(1)}%</td>
+      <td>$${tc.toFixed(2)}</td>
+      <td>${tasa !== null ? tasa.toFixed(2) + '%' : '—'}</td>
+      <td>${desemp.toFixed(1)}%</td>
+      <td>$${res.toFixed(1)}B</td>
+    `;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ══════════════════════════════════════
+//  SCROLL REVEAL
+// ══════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
